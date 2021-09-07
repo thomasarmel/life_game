@@ -5,19 +5,19 @@
 #include <vector>
 #include <random>
 #include <chrono>
-#include <opencv2/core.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgproc.hpp>
+#include "ObservableBoard.h"
 
-class Board
+class Board : public ObservableBoard
 {
 public:
     Board(size_t boardSize=100);
     virtual void fillWithRandom();
+    virtual void reset();
     void toNext();
     const void *rawData();
+    size_t getBoardSize() const;
 
-private:
+protected:
     const unsigned short numberOfCellNeighbours(short x, short y);
 
     size_t m_boardSize;

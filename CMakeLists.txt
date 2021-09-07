@@ -10,6 +10,6 @@ FIND_PACKAGE( OpenCV REQUIRED core highgui)
 set(OpenCV_LIBS opencv_core opencv_highgui)
 set(OpenCV_FOUND TRUE)
 
-add_executable(life_game main.cpp Board.cpp Board.h)
+add_executable(life_game main.cpp Board.cpp Board.h BoardDisplayer.cpp BoardDisplayer.h BoardObserver.h ObservableBoard.cpp ObservableBoard.h)
 
 target_link_libraries(life_game ${OpenCV_LIBS})

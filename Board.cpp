@@ -21,6 +21,11 @@ void Board::fillWithRandom()
     });
 }
 
+void Board::reset()
+{
+    fillWithRandom();
+}
+
 void Board::toNext()
 {
     vector<unsigned char> tmpBoard=m_board;
@@ -41,6 +46,9 @@ void Board::toNext()
         }
     }
     copy(tmpBoard.begin(), tmpBoard.end(), m_board.begin());
+    for_each(m_observers.cbegin(), m_observers.cend(), [this](BoardObserver *observer){
+        observer->update(this);
+    });
 }
 
 const unsigned short Board::numberOfCellNeighbours(short x, short y)
@@ -67,4 +75,9 @@ const unsigned short Board::numberOfCellNeighbours(short x, short y)
 const void *Board::rawData()
 {
     return m_board.data();
+}
+
+size_t Board::getBoardSize() const
+{
+    return m_boardSize;
 }
