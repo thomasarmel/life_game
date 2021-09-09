@@ -5,6 +5,7 @@ using namespace cv;
 
 BoardDisplayer::BoardDisplayer(double zoom, unsigned short delay) : m_zoom(zoom), m_delay(delay)
 {
+    namedWindow(m_windowName, WINDOW_NORMAL);
 }
 
 void BoardDisplayer::update(ObservableBoard *observable)
@@ -19,8 +20,8 @@ void BoardDisplayer::update(ObservableBoard *observable)
 
     //memcpy(m_CVBoard.data, board->rawData(), boardSize * boardSize * sizeof(unsigned char));
     m_CVBoard.data = (uchar*)board->rawData();
-    resize(m_CVBoard, m_CVBoardDisp, Size(boardSize * m_zoom, boardSize * m_zoom));
-    imshow("Life game", m_CVBoardDisp);
+    resizeWindow(m_windowName, boardSize * m_zoom, boardSize * m_zoom);
+    imshow(m_windowName, m_CVBoard);
     char key = (char)waitKey(m_delay);
     if(key==27)
     {
