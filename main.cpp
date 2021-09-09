@@ -6,7 +6,7 @@ using namespace cv;
 
 int main()
 {
-    const size_t boardSize=100;
+    const size_t boardSize=200;
     Board board(boardSize);
     board.fillWithRandom();
     BoardDisplayer displayer(5, 1);

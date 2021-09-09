@@ -1,7 +1,6 @@
 #ifndef LIFE_GAME_BOARDOBSERVER_H
 #define LIFE_GAME_BOARDOBSERVER_H
 
-#include <vector>
 #include "ObservableBoard.h"
 
 class ObservableBoard;

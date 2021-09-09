@@ -1,10 +1,8 @@
 #ifndef LIFE_GAME_BOARD_H
 #define LIFE_GAME_BOARD_H
 
-#include <iostream>
+#include <iosfwd>
 #include <vector>
-#include <random>
-#include <chrono>
 #include "ObservableBoard.h"
 
 class Board : public ObservableBoard
