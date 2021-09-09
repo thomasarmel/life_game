@@ -17,7 +17,8 @@ void BoardDisplayer::update(ObservableBoard *observable)
         m_CVBoard.create(boardSize, boardSize, CV_8U);
     }
 
-    memcpy(m_CVBoard.data, board->rawData(), boardSize * boardSize * sizeof(unsigned char));
+    //memcpy(m_CVBoard.data, board->rawData(), boardSize * boardSize * sizeof(unsigned char));
+    m_CVBoard.data = (uchar*)board->rawData();
     resize(m_CVBoard, m_CVBoardDisp, Size(boardSize * m_zoom, boardSize * m_zoom));
     imshow("Life game", m_CVBoardDisp);
     char key = (char)waitKey(m_delay);
