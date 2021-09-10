@@ -16,7 +16,7 @@ public:
     size_t getBoardSize() const;
 
 protected:
-    const unsigned short numberOfCellNeighbours(short x, short y);
+    const unsigned short numberOfCellNeighbours(short x, short y, short stopAt=4);
 
     size_t m_boardSize;
     std::vector<unsigned char> m_board;

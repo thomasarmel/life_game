@@ -37,24 +37,25 @@ void Board::toNext()
     {
         for(unsigned short j=0; j<m_boardSize; j++)
         {
-            nbNeighbours=numberOfCellNeighbours(i, j);
+            nbNeighbours=numberOfCellNeighbours(i, j, 4);
+            size_t arrayPos = (i*m_boardSize)+j;
             if(nbNeighbours < 2 || nbNeighbours > 3)
             {
-                tmpBoard[(i*m_boardSize)+j]=255;
+                tmpBoard[arrayPos]=255;
             }
             else if(nbNeighbours == 3)
             {
-                tmpBoard[(i*m_boardSize)+j]=0;
+                tmpBoard[arrayPos]=0;
             }
         }
     }
-    copy(tmpBoard.begin(), tmpBoard.end(), m_board.begin());
+    tmpBoard.swap(m_board);
     for_each(m_observers.cbegin(), m_observers.cend(), [this](BoardObserver *observer){
         observer->update(this);
     });
 }
 
-const unsigned short Board::numberOfCellNeighbours(short x, short y)
+const unsigned short Board::numberOfCellNeighbours(short x, short y, short stopAt)
 {
     unsigned short nbNeighbours = 0;
     for (unsigned short i = x - 1; i < x + 2; i++)
@@ -70,6 +71,10 @@ const unsigned short Board::numberOfCellNeighbours(short x, short y)
                 continue;
             }
             nbNeighbours += (m_board[(i*m_boardSize)+j] == 0);
+            if(nbNeighbours >= stopAt)
+            {
+                return nbNeighbours;
+            }
         }
     }
     return nbNeighbours;
