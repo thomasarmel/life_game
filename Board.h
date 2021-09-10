@@ -16,10 +16,10 @@ public:
     size_t getBoardSize() const;
 
 protected:
-    const unsigned short numberOfCellNeighbours(short x, short y, short stopAt=4);
+    const unsigned short numberOfCellNeighbours(short x, short y, short stopAt=8);
 
     size_t m_boardSize;
-    std::vector<unsigned char> m_board;
+    std::vector<unsigned char> m_board, m_tmpBoard;
 };
 
 #endif //LIFE_GAME_BOARD_H

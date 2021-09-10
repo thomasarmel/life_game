@@ -9,6 +9,7 @@ class ObservableBoard
 {
 public:
     void addObserver(BoardObserver *observer);
+    void updateAllObservers();
 protected:
     std::vector<BoardObserver*> m_observers;
 };

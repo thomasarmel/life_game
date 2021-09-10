@@ -6,10 +6,10 @@ using namespace cv;
 
 int main()
 {
-    const size_t boardSize=500;
+    const size_t boardSize=200;
     Board board(boardSize);
     board.fillWithRandom();
-    BoardDisplayer displayer(2, 1);
+    BoardDisplayer displayer(5, 1);
     board.addObserver(&displayer);
     for(;;)
     {
@@ -17,3 +17,24 @@ int main()
     }
     return 0;
 }
+
+
+
+/**
+ * TODO: Uni test
+*   const size_t boardSize=5;
+    Board board(boardSize);
+    uchar * const data = (uchar*)board.rawData();
+    memset((void *)data, 255, 25);
+    data[7] = 0;
+    data[12] = 0;
+    data[17] = 0;
+    //board.fillWithRandom();
+    BoardDisplayer displayer(50, 0);
+    board.addObserver(&displayer);
+    displayer.update(&board);
+    for(;;)
+    {
+        board.toNext();
+    }
+*/

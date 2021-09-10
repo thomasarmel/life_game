@@ -16,7 +16,7 @@ public:
 protected:
     double m_zoom;
     unsigned short m_delay=1;
-    cv::Mat m_CVBoard, m_CVBoardDisp;
+    cv::Mat m_CVBoard;
     const std::string m_windowName = "Life game";
 };
 

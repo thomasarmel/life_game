@@ -8,6 +8,7 @@ using namespace std;
 Board::Board(size_t boardSize) : m_boardSize(boardSize)
 {
     m_board.resize(m_boardSize*m_boardSize);
+    m_tmpBoard.resize(m_boardSize*m_boardSize);
 }
 
 void Board::fillWithRandom()
@@ -31,7 +32,6 @@ void Board::reset()
 
 void Board::toNext()
 {
-    vector<unsigned char> tmpBoard=m_board;
     unsigned short nbNeighbours;
     for(unsigned short i=0; i<m_boardSize; i++)
     {
@@ -39,20 +39,22 @@ void Board::toNext()
         {
             nbNeighbours=numberOfCellNeighbours(i, j, 4);
             size_t arrayPos = (i*m_boardSize)+j;
-            if(nbNeighbours < 2 || nbNeighbours > 3)
+            switch (nbNeighbours)
             {
-                tmpBoard[arrayPos]=255;
-            }
-            else if(nbNeighbours == 3)
-            {
-                tmpBoard[arrayPos]=0;
+                case 2:
+                    m_tmpBoard[arrayPos]=m_board[arrayPos];
+                    break;
+                case 3:
+                    m_tmpBoard[arrayPos]=0;
+                    break;
+                default:
+                    m_tmpBoard[arrayPos]=255;
+                    break;
             }
         }
     }
-    tmpBoard.swap(m_board);
-    for_each(m_observers.cbegin(), m_observers.cend(), [this](BoardObserver *observer){
-        observer->update(this);
-    });
+    m_tmpBoard.swap(m_board);
+    updateAllObservers();
 }
 
 const unsigned short Board::numberOfCellNeighbours(short x, short y, short stopAt)
