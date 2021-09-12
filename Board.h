@@ -14,12 +14,16 @@ public:
     void toNext();
     const void *rawData();
     size_t getBoardSize() const;
+    void pauseSimulation(bool pause=true);
+    bool isSimulationPaused() const;
 
 protected:
+    virtual void calculateNext();
     const unsigned short numberOfCellNeighbours(short x, short y, short stopAt=8);
 
     size_t m_boardSize;
     std::vector<unsigned char> m_board, m_tmpBoard;
+    bool m_simulationIsPAused = false;
 };
 
 #endif //LIFE_GAME_BOARD_H

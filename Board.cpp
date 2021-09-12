@@ -1,6 +1,7 @@
 #include <iostream>
 #include <random>
 #include <chrono>
+#include <thread>
 #include "Board.h"
 
 using namespace std;
@@ -32,6 +33,12 @@ void Board::reset()
 
 void Board::toNext()
 {
+    m_simulationIsPAused ? std::this_thread::sleep_for (std::chrono::milliseconds (1)) : calculateNext();
+    updateAllObservers();
+}
+
+void Board::calculateNext()
+{
     unsigned short nbNeighbours;
     for(unsigned short i=0; i<m_boardSize; i++)
     {
@@ -54,7 +61,6 @@ void Board::toNext()
         }
     }
     m_tmpBoard.swap(m_board);
-    updateAllObservers();
 }
 
 const unsigned short Board::numberOfCellNeighbours(short x, short y, short stopAt)
@@ -90,4 +96,14 @@ const void *Board::rawData()
 size_t Board::getBoardSize() const
 {
     return m_boardSize;
+}
+
+void Board::pauseSimulation(bool pause)
+{
+    m_simulationIsPAused = pause;
+}
+
+bool Board::isSimulationPaused() const
+{
+    return m_simulationIsPAused;
 }

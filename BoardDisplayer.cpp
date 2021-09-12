@@ -23,13 +23,16 @@ void BoardDisplayer::update(ObservableBoard *observable)
     resizeWindow(m_windowName, boardSize * m_zoom, boardSize * m_zoom);
     imshow(m_windowName, m_CVBoard);
     char key = (char)waitKey(m_delay);
-    if(key==27)
+    switch (key)
     {
-        exit(0);
-    }
-    if(key==114) // 'r'
-    {
-        board->reset();
-        return;
+        case 27: // Esc
+            exit(0);
+            break;
+        case 32: // Space
+            board->pauseSimulation(!board->isSimulationPaused());
+            break;
+        case 114: // r
+            board->reset();
+            return;
     }
 }
