@@ -21,6 +21,7 @@ public:
     void pauseSimulation(bool pause=true);
     bool isSimulationPaused() const;
     Board & operator=(Board &other);
+    unsigned char *operator[](int beginArrayPosition);
 
 protected:
     virtual void calculateNext();

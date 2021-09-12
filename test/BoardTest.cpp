@@ -5,19 +5,17 @@ TEST_F(BoardTest, ThreeAlignedPixels) {
     board.pauseSimulation(false);
     unsigned char* data = (unsigned char*)board.rawData();
     memset((void *)data, 255, 25);
-    data[7] = 0;
-    data[12] = 0;
-    data[17] = 0;
+    board[1][2] = 0;
+    board[2][2] = 0;
+    board[3][2] = 0;
 
     board();
-    data = (unsigned char*)board.rawData();
-    EXPECT_EQ((int)data[11], 0);
-    EXPECT_EQ((int)data[12], 0);
-    EXPECT_EQ((int)data[13], 0);
+    EXPECT_EQ((int)board[2][1], 0);
+    EXPECT_EQ((int)board[2][2], 0);
+    EXPECT_EQ((int)board[2][3], 0);
 
     board();
-    data = (unsigned char*)board.rawData();
-    EXPECT_EQ((int)data[7], 0);
-    EXPECT_EQ((int)data[12], 0);
-    EXPECT_EQ((int)data[17], 0);
+    EXPECT_EQ((int)board[1][2], 0);
+    EXPECT_EQ((int)board[2][2], 0);
+    EXPECT_EQ((int)board[3][2], 0);
 }

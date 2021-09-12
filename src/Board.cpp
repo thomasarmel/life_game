@@ -135,3 +135,9 @@ Board &Board::operator=(Board &other)
     memcpy((void*)otherData, data, m_boardSize*m_boardSize);
     return *this;
 }
+
+unsigned char *Board::operator[](int beginArrayPosition)
+{
+    unsigned char *data = (unsigned char*)rawData();
+    return data + (beginArrayPosition*m_boardSize);
+}
