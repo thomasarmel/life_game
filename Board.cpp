@@ -2,6 +2,7 @@
 #include <random>
 #include <chrono>
 #include <thread>
+#include <future>
 #include "Board.h"
 
 using namespace std;
@@ -39,26 +40,33 @@ void Board::toNext()
 
 void Board::calculateNext()
 {
-    unsigned short nbNeighbours;
+    std::vector<std::future<void>> p(m_boardSize);
+
     for(unsigned short i=0; i<m_boardSize; i++)
     {
-        for(unsigned short j=0; j<m_boardSize; j++)
-        {
-            nbNeighbours=numberOfCellNeighbours(i, j, 4);
-            size_t arrayPos = (i*m_boardSize)+j;
-            switch (nbNeighbours)
+        p[i] = std::async(std::launch::async, [&, i](){
+            for(unsigned short j=0; j<m_boardSize; j++)
             {
-                case 2:
-                    m_tmpBoard[arrayPos]=m_board[arrayPos];
-                    break;
-                case 3:
-                    m_tmpBoard[arrayPos]=0;
-                    break;
-                default:
-                    m_tmpBoard[arrayPos]=255;
-                    break;
+                unsigned short nbNeighbours=numberOfCellNeighbours(i, j, 4);
+                size_t arrayPos = (i*m_boardSize)+j;
+                switch (nbNeighbours)
+                {
+                    case 2:
+                        m_tmpBoard[arrayPos]=m_board[arrayPos];
+                        break;
+                    case 3:
+                        m_tmpBoard[arrayPos]=0;
+                        break;
+                    default:
+                        m_tmpBoard[arrayPos]=255;
+                        break;
+                }
             }
-        }
+        });
+    }
+    for(unsigned short i=0; i<p.size(); i++)
+    {
+        p[i].get();
     }
     m_tmpBoard.swap(m_board);
 }
