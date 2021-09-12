@@ -18,7 +18,6 @@ void BoardDisplayer::update(ObservableBoard *observable)
         m_CVBoard.create(boardSize, boardSize, CV_8U);
     }
 
-    //memcpy(m_CVBoard.data, board->rawData(), boardSize * boardSize * sizeof(unsigned char));
     m_CVBoard.data = (uchar*)board->rawData();
     resizeWindow(m_windowName, boardSize * m_zoom, boardSize * m_zoom);
     imshow(m_windowName, m_CVBoard);

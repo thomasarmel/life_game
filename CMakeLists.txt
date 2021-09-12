@@ -15,3 +15,5 @@ add_executable(life_game src/main.cpp src/Board.cpp include/Board.h src/BoardDis
 set_property(TARGET life_game PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 target_link_libraries(life_game ${OpenCV_LIBS})
+
+add_subdirectory(Google_tests)

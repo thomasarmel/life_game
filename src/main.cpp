@@ -13,7 +13,7 @@ int main()
     board.addObserver(&displayer);
     for(;;)
     {
-        board.toNext();
+        board();
     }
     return 0;
 }

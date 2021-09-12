@@ -1,16 +1,25 @@
-#include <iostream>
 #include <random>
 #include <chrono>
 #include <thread>
-#include <future>
+
 #include "Board.h"
 
 using namespace std;
 
-Board::Board(size_t boardSize) : m_boardSize(boardSize)
+Board::Board()
+{}
+
+Board::Board(size_t boardSize)
 {
+    setSize(boardSize);
+}
+
+void Board::setSize(size_t boardSize)
+{
+    m_boardSize = boardSize;
     m_board.resize(m_boardSize*m_boardSize);
     m_tmpBoard.resize(m_boardSize*m_boardSize);
+    m_nextCalculatorFuturesList.resize(boardSize);
 }
 
 void Board::fillWithRandom()
@@ -38,13 +47,16 @@ void Board::toNext()
     updateAllObservers();
 }
 
+void Board::operator()()
+{
+    toNext();
+}
+
 void Board::calculateNext()
 {
-    std::vector<std::future<void>> p(m_boardSize);
-
     for(unsigned short i=0; i<m_boardSize; i++)
     {
-        p[i] = std::async(std::launch::async, [&, i](){
+        m_nextCalculatorFuturesList[i] = std::async(std::launch::async, [&, i](){
             for(unsigned short j=0; j<m_boardSize; j++)
             {
                 unsigned short nbNeighbours=numberOfCellNeighbours(i, j, 4);
@@ -64,9 +76,9 @@ void Board::calculateNext()
             }
         });
     }
-    for(unsigned short i=0; i<p.size(); i++)
+    for(unsigned short i=0; i < m_nextCalculatorFuturesList.size(); i++)
     {
-        p[i].get();
+        m_nextCalculatorFuturesList[i].get();
     }
     m_tmpBoard.swap(m_board);
 }
@@ -114,4 +126,12 @@ void Board::pauseSimulation(bool pause)
 bool Board::isSimulationPaused() const
 {
     return m_simulationIsPAused;
+}
+
+Board &Board::operator=(Board &other)
+{
+    other.setSize(m_boardSize);
+    const void *otherData=other.rawData(), *data = rawData();
+    memcpy((void*)otherData, data, m_boardSize*m_boardSize);
+    return *this;
 }
