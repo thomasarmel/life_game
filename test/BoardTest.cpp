@@ -2,17 +2,22 @@
 
 TEST_F(BoardTest, ThreeAlignedPixels) {
     Board board(5);
-    unsigned char* const data = (unsigned char*)board.rawData();
+    board.pauseSimulation(false);
+    unsigned char* data = (unsigned char*)board.rawData();
     memset((void *)data, 255, 25);
     data[7] = 0;
     data[12] = 0;
-    //data[17] = 0;
-    //board.pauseSimulation(false);
+    data[17] = 0;
+
     board();
-    for(int i=0; i<25; i++)
-    {
-        std::cout << i << " " <<  (int)data[i] << std::endl;
-    }
-    EXPECT_EQ((int)data[7], 255);
+    data = (unsigned char*)board.rawData();
+    EXPECT_EQ((int)data[11], 0);
     EXPECT_EQ((int)data[12], 0);
+    EXPECT_EQ((int)data[13], 0);
+
+    board();
+    data = (unsigned char*)board.rawData();
+    EXPECT_EQ((int)data[7], 0);
+    EXPECT_EQ((int)data[12], 0);
+    EXPECT_EQ((int)data[17], 0);
 }
