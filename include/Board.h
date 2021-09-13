@@ -30,6 +30,7 @@ protected:
     size_t m_boardSize;
     std::vector<unsigned char> m_board, m_tmpBoard;
     std::vector<std::future<void>> m_nextCalculatorFuturesList;
+    std::vector<int> m_boardSizeRange;
     bool m_simulationIsPAused = false;
 };
 

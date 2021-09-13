@@ -20,6 +20,8 @@ void Board::setSize(size_t boardSize)
     m_board.resize(m_boardSize*m_boardSize);
     m_tmpBoard.resize(m_boardSize*m_boardSize);
     m_nextCalculatorFuturesList.resize(boardSize);
+    m_boardSizeRange.resize(m_boardSize);
+    std::iota(std::begin(m_boardSizeRange), std::end(m_boardSizeRange), 0);
 }
 
 void Board::fillWithRandom()
@@ -54,9 +56,7 @@ void Board::operator()()
 
 void Board::calculateNext()
 {
-    std::vector<int> boardSizeRange(m_boardSize);
-    std::iota(std::begin(boardSizeRange), std::end(boardSizeRange), 0);
-    std::for_each(std::execution::par_unseq, std::begin(boardSizeRange), std::end(boardSizeRange), [&](int i) {
+    std::for_each(std::execution::par_unseq, std::begin(m_boardSizeRange), std::end(m_boardSizeRange), [&](int i) {
         for(unsigned short j=0; j<m_boardSize; j++)
         {
             unsigned short nbNeighbours=numberOfCellNeighbours(i, j, 4);
