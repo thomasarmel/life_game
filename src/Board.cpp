@@ -1,7 +1,7 @@
 #include <random>
 #include <chrono>
 #include <thread>
-
+#include <execution>
 #include "Board.h"
 
 using namespace std;
@@ -54,32 +54,27 @@ void Board::operator()()
 
 void Board::calculateNext()
 {
-    for(unsigned short i=0; i<m_boardSize; i++)
-    {
-        m_nextCalculatorFuturesList[i] = std::async(std::launch::async, [&, i](){
-            for(unsigned short j=0; j<m_boardSize; j++)
+    std::vector<int> boardSizeRange(m_boardSize);
+    std::iota(std::begin(boardSizeRange), std::end(boardSizeRange), 0);
+    std::for_each(std::execution::par_unseq, std::begin(boardSizeRange), std::end(boardSizeRange), [&](int i) {
+        for(unsigned short j=0; j<m_boardSize; j++)
+        {
+            unsigned short nbNeighbours=numberOfCellNeighbours(i, j, 4);
+            size_t arrayPos = (i*m_boardSize)+j;
+            switch (nbNeighbours)
             {
-                unsigned short nbNeighbours=numberOfCellNeighbours(i, j, 4);
-                size_t arrayPos = (i*m_boardSize)+j;
-                switch (nbNeighbours)
-                {
-                    case 2:
-                        m_tmpBoard[arrayPos]=m_board[arrayPos];
-                        break;
-                    case 3:
-                        m_tmpBoard[arrayPos]=0;
-                        break;
-                    default:
-                        m_tmpBoard[arrayPos]=255;
-                        break;
-                }
+                case 2:
+                    m_tmpBoard[arrayPos]=m_board[arrayPos];
+                    break;
+                case 3:
+                    m_tmpBoard[arrayPos]=0;
+                    break;
+                default:
+                    m_tmpBoard[arrayPos]=255;
+                    break;
             }
-        });
-    }
-    for(unsigned short i=0; i < m_nextCalculatorFuturesList.size(); i++)
-    {
-        m_nextCalculatorFuturesList[i].get();
-    }
+        }
+    });
     m_tmpBoard.swap(m_board);
 }
 

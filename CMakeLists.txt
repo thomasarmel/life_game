@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 project(life_game)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 
 include_directories("D:\\lib\\opencv\\build\\install\\include" "./include")
 set(OpenCV_DIR "D:\\lib\\opencv\\build\\install")

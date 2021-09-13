@@ -6,10 +6,10 @@ using namespace cv;
 
 int main()
 {
-    const size_t boardSize=100;
+    const size_t boardSize=10000;
     Board board(boardSize);
     board.fillWithRandom();
-    BoardDisplayer displayer(10, 1);
+    BoardDisplayer displayer(0.1, 1);
     board.addObserver(&displayer);
     for(;;)
     {
